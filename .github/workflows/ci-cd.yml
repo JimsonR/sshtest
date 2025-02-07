@@ -41,19 +41,30 @@ jobs:
       
       # Deploy the containers
 
-      - name: Install sshpass
+      - name: Set up SSH key
         run: |
-          sudo apt-get update
-          sudo apt-get install -y sshpass
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
 
-     
-      - name: Deploy to Server
+      - name: Add Server SSH Key to known_hosts
         run: |
-          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no -tt jimmy@localhost <<EOF
-          # ssh -vvv jimmy@localhost "echo 'SSH works!'" <<EOF
-            # docker pull jyothika2832/billing-backend:latest
-            # docker pull jyothika2832/billing-frontend:latest
-            # cd ..
-            # docker-compose down
-            # docker-compose up -d --force-recreate
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy to Windows Server
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+            # Pull Docker images
+            docker pull jyothika2832/billing-backend:latest
+            docker pull jyothika2832/billing-frontend:latest
+
+            # Navigate to the project directory
+            cd C:\\path\\to\\your\\project
+
+            # Stop and restart Docker containers
+            docker-compose down
+            docker-compose up -d --force-recreate
           EOF
