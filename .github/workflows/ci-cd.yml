@@ -44,9 +44,9 @@ jobs:
         run: |
 
           ssh -vvv jimmy@localhost "echo 'SSH works!'" <<EOF
-            docker pull jyothika2832/billing-backend:latest
-            docker pull jyothika2832/billing-frontend:latest
-            cd ..
-            docker-compose down
-            docker-compose up -d --force-recreate
+            # docker pull jyothika2832/billing-backend:latest
+            # docker pull jyothika2832/billing-frontend:latest
+            # cd ..
+            # docker-compose down
+            # docker-compose up -d --force-recreate
           EOF
