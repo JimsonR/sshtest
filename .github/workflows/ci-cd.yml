@@ -16,22 +16,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up SSH key
+      # - name: Set up SSH key
         
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          eval "$(ssh-agent -s)" # Start SSH agent
-          ssh-add ~/.ssh/id_rsa # Add key (no passphrase required)
-          ssh-add -l # Debug: List loaded keys
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+      #     eval "$(ssh-agent -s)" # Start SSH agent
+      #     ssh-add ~/.ssh/id_rsa # Add key (no passphrase required)
+      #     ssh-add -l # Debug: List loaded keys
+
+      # - name: Add Server SSH Key to known_hosts
+      #   run: |
           
-      - name: Add Server SSH Key to known_hosts
-        run: |
+      #     ssh-keyscan -H localhost >> ~/.ssh/known_hosts
           
-          ssh-keyscan -H localhost >> ~/.ssh/known_hosts
-          
-          chmod 644 ~/.ssh/known_hosts  
+      #     chmod 644 ~/.ssh/known_hosts  
 
       # - name: Install SSH key
       #   uses: shimataro/ssh-key-action@v2
@@ -40,10 +40,17 @@ jobs:
       #     known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
       
       # Deploy the containers
+
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+     
       - name: Deploy to Server
         run: |
-
-          ssh -vvv jimmy@localhost "echo 'SSH works!'" <<EOF
+          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -o StrictHostKeyChecking=no jimmy@localhost <<EOF
+          # ssh -vvv jimmy@localhost "echo 'SSH works!'" <<EOF
             # docker pull jyothika2832/billing-backend:latest
             # docker pull jyothika2832/billing-frontend:latest
             # cd ..
