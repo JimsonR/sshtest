@@ -49,7 +49,7 @@ jobs:
      
       - name: Deploy to Server
         run: |
-          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -o StrictHostKeyChecking=no -tt jimmy@localhost <<EOF
+          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no -tt jimmy@localhost <<EOF
           # ssh -vvv jimmy@localhost "echo 'SSH works!'" <<EOF
             # docker pull jyothika2832/billing-backend:latest
             # docker pull jyothika2832/billing-frontend:latest
