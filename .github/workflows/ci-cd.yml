@@ -64,13 +64,13 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
             # Pull Docker images
-            docker pull jyothika2832/billing-backend:latest
-            docker pull jyothika2832/billing-frontend:latest
+            # docker pull jyothika2832/billing-backend:latest
+            # docker pull jyothika2832/billing-frontend:latest
 
-            # Navigate to the project directory
-            cd C:\\path\\to\\your\\project
+            # # Navigate to the project directory
+            # cd C:\\path\\to\\your\\project
 
-            # Stop and restart Docker containers
-            docker-compose down
-            docker-compose up -d --force-recreate
+            # # Stop and restart Docker containers
+            # docker-compose down
+            # docker-compose up -d --force-recreate
           EOF
