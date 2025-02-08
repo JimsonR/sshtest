@@ -41,6 +41,12 @@ jobs:
       
       # Deploy the containers
 
+      - name: Debug SSH Host
+        run: |
+          echo "Checking SSH_HOST: ${{ secrets.SSH_HOST }}"
+          nslookup ${{ secrets.SSH_HOST }} || ping -c 4 ${{ secrets.SSH_HOST }}
+
+
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
