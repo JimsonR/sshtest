@@ -45,7 +45,14 @@ jobs:
       #   run: |
       #     echo "Checking SSH_HOST: ${{ secrets.SSH_HOST }}"
       #     nslookup ${{ secrets.SSH_HOST }} || ping -c 4 ${{ secrets.SSH_HOST }}
-
+      
+      - name: Debug SSH Connectivity
+        run: |
+          echo "Checking SSH_HOST: ${{ secrets.SSH_HOST }}"
+          nslookup ${{ secrets.SSH_HOST }} || echo "DNS resolution failed"
+          ping -c 4 ${{ secrets.SSH_HOST }} || echo "Ping failed"
+          nc -zv ${{ secrets.SSH_HOST }} 22 || echo "Port 22 is unreachable"
+    
 
       - name: Set up SSH key
         run: |
