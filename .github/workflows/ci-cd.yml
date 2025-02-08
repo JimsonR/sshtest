@@ -57,7 +57,7 @@ jobs:
 
       - name: Add Server SSH Key to known_hosts
         run: |
-          # ssh-keyscan -v -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          
           ssh-keyscan -v -t rsa,ecdsa,ed25519 ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
